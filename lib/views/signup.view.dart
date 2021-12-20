@@ -3,6 +3,7 @@ import 'package:mobx_mvc_mvvm/controllers/signup.controller.dart';
 import 'package:mobx_mvc_mvvm/stores/app.store.dart';
 import 'package:mobx_mvc_mvvm/view-models/signup.viewmodel.dart';
 import 'package:mobx_mvc_mvvm/views/home.view.dart';
+import 'package:provider/provider.dart';
 
 class SignupView extends StatefulWidget {
   SignupView({Key? key}) : super(key: key);
@@ -18,10 +19,11 @@ class _SignupViewState extends State<SignupView> {
 
   var model = SignupViewModel();
 
-  var store = AppStore();
 
   @override
   Widget build(BuildContext context) {
+    var store = Provider.of<AppStore>(context);
+
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
