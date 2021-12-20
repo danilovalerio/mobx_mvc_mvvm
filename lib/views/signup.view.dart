@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobx_mvc_mvvm/controllers/signup.controller.dart';
+import 'package:mobx_mvc_mvvm/stores/app.store.dart';
 import 'package:mobx_mvc_mvvm/view-models/signup.viewmodel.dart';
+import 'package:mobx_mvc_mvvm/views/home.view.dart';
 
 class SignupView extends StatefulWidget {
-
   SignupView({Key? key}) : super(key: key);
 
   @override
@@ -16,6 +17,8 @@ class _SignupViewState extends State<SignupView> {
   final _controller = SignupController();
 
   var model = SignupViewModel();
+
+  var store = AppStore();
 
   @override
   Widget build(BuildContext context) {
@@ -104,17 +107,18 @@ class _SignupViewState extends State<SignupView> {
                           }
 
                           setState(() {
-                            model.ocupado = true;
-                          });
-
-                          print(
-                              "${model.name} ${model.email} ${model.password} ");
-                          _controller.create(model);
-
-                          _controller.create(model).then((data) {
-                            print("token ${data.token}");
-                            setState(() {
-                              model.ocupado = false;
+                            _controller.create(model).then((data) {
+                              store.setUser(
+                                data.name,
+                                data.email,
+                                data.picture,
+                                data.token,
+                              );
+                              setState(() {});
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeView()));
                             });
                           });
                         },

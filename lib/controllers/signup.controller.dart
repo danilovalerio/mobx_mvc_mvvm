@@ -10,7 +10,9 @@ class SignupController {
   }
 
   Future<UserModel> create(SignupViewModel model) async {
+    model.ocupado = true;
     var user = await repository!.createAccount(model);
+    model.ocupado = false;
     return user;
   }
 
