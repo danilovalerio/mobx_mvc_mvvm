@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:mobx_mvc_mvvm/controllers/signup.controller.dart';
 import 'package:mobx_mvc_mvvm/view-models/signup.viewmodel.dart';
 
-class SignupView extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-  final _controller = SignupController();
-  var model = SignupViewModel();
+class SignupView extends StatefulWidget {
 
   SignupView({Key? key}) : super(key: key);
+
+  @override
+  State<SignupView> createState() => _SignupViewState();
+}
+
+class _SignupViewState extends State<SignupView> {
+  final _formKey = GlobalKey<FormState>();
+
+  final _controller = SignupController();
+
+  var model = SignupViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -78,22 +86,45 @@ class SignupView extends StatelessWidget {
                     model.password = val!;
                   },
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                    }
+                SizedBox(
+                  height: 30,
+                ),
+                model.ocupado
+                    ? Center(
+                        child: Container(
+                          child: const CircularProgressIndicator(
+                            backgroundColor: Colors.black,
+                          ),
+                        ),
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                          }
 
-                    print("${model.name} ${model.email} ${model.password} ");
-                    _controller.create(model);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      'Nova Carteira',
-                    ),
-                  ),
-                )
+                          setState(() {
+                            model.ocupado = true;
+                          });
+
+                          print(
+                              "${model.name} ${model.email} ${model.password} ");
+                          _controller.create(model);
+
+                          _controller.create(model).then((data) {
+                            print("token ${data.token}");
+                            setState(() {
+                              model.ocupado = false;
+                            });
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            'Nova Carteira',
+                          ),
+                        ),
+                      )
               ],
             ),
           ),

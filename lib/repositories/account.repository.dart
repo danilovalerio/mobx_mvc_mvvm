@@ -3,7 +3,8 @@ import 'package:mobx_mvc_mvvm/view-models/signup.viewmodel.dart';
 
 class AccountRepository {
   Future<UserModel> createAccount(SignupViewModel model) async {
-    await Future.delayed(const Duration(microseconds: 1500));
+
+    await Future.delayed(const Duration(microseconds: 3000));
 
     return UserModel(
         id: "1",
